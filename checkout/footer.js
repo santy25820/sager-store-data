@@ -1390,12 +1390,12 @@
 
     var title = document.createElement("h3");
     title.textContent = "Verificación de seguridad";
-    title.style.cssText = "color:#fff;margin-bottom:12px;";
+    title.style.cssText = "color:#222;margin-bottom:12px";
 
     var description = document.createElement("p");
     description.textContent =
       "Completa esta verificación para continuar con tu pedido.";
-    description.style.cssText = "color:#ccc;margin-bottom:14px;";
+    description.style.cssText = "color:#666;margin-bottom:14px";
 
     var widget = document.createElement("div");
     widget.className = "cf-turnstile";
@@ -1466,7 +1466,7 @@
     btn.style.cssText =
       "display:block;width:100%;padding:16px;margin-top:20px;background:#fff;color:#000;border:0;border-radius:5px;font-weight:bold;cursor:pointer";
 
-    msg.style.cssText = "color:#fff;margin-top:12px";
+    msg.style.cssText = "color:#424242;margin-top:12px";
 
     zona.append(btn, msg);
 
@@ -1475,6 +1475,8 @@
 
       btn.disabled = true;
       btn.textContent = "Preparando pedido...";
+
+      msg.style.color = "#424242";
 
       try {
         const nombre = val("sager-fullname");
@@ -1624,8 +1626,9 @@
         };
 
         btn.textContent = "Registrando pedido...";
+        msg.style.color = "#424242";
         msg.textContent =
-          "Estamos registrando tu pedido. No cierres esta página.";
+        "Estamos registrando tu pedido. No cierres esta página.";
 
         let r, d;
 
@@ -1642,6 +1645,8 @@
 
         } catch (e) {
           btn.textContent = "No se pudo confirmar";
+
+          msg.style.color = "#c62828";
 
           msg.textContent =
             "No pudimos confirmar la respuesta del servidor. No vuelvas a enviar el pedido todavía. Contáctanos por WhatsApp para comprobar su estado.";
@@ -1661,6 +1666,8 @@
 
         sessionStorage.removeItem(REQUEST_KEY);
 
+        msg.style.color = "#2e7d32";
+
         msg.textContent =
           "¡Gracias por comprar en Sager Store! Tu número de pedido es " +
           d.orderNumber +
@@ -1669,6 +1676,7 @@
         btn.style.cursor = "default";
 
       } catch (e) {
+        msg.style.color = "#c62828";
         msg.textContent = e.message;
         btn.disabled = false;
         btn.textContent = "Finalizar pedido";
