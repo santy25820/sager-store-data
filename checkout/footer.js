@@ -2009,7 +2009,7 @@ const totalBase = window.sagerTotalPedido;
       "Subtotal de productos: " + formatoDinero(isFinite(subtotal) ? subtotal : 0),
       "",
       "DATOS DE ENTREGA",
-      datosDestino.join("\\n")
+      datosDestino.join("\n")
     ];
 
     if (costoBase !== null && costoBase !== undefined && isFinite(Number(costoBase))) {
