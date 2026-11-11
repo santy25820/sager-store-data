@@ -1988,7 +1988,7 @@ const totalBase = window.sagerTotalPedido;
 
     var parrafoCotizacion = document.createElement("p");
     parrafoCotizacion.textContent =
-      "Si prefieres conocer el costo definitivo antes de pagar, puedes solicitar una cotización por WhatsApp. Prepararemos un mensaje con los productos, cantidades, precios y datos de entrega que hayas seleccionado.";
+      "Si prefieres conocer el costo definitivo antes de pagar, puedes solicitar una cotización por WhatsApp. El mensaje incluirá los productos y sus cantidades, con un espacio para que indiques la ciudad de destino. No necesitas completar el formulario para solicitar la cotización.";
 
     var parrafoIncluye = document.createElement("p");
     parrafoIncluye.textContent =
