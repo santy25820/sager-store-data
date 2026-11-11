@@ -258,9 +258,9 @@
     });
 
     subtotalElemento.textContent = formatoDinero(
-      Number(carrito.subtotal || 0) / 100,
-      moneda
-    );
+  Number(carrito.subtotal || 0) / 100,
+  moneda
+);
 
     window.sagerSubtotalPedido = Number(carrito.subtotal || 0) / 100;
     window.sagerMonedaPedido = moneda;
