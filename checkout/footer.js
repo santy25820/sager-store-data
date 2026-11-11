@@ -1794,7 +1794,10 @@ const totalBase = window.sagerTotalPedido;
         }).filter(Boolean).join("\n") ||
           (modalidad === "latacunga" ? "Retiro en La Fornace" : "");
 
-        if (campos.some(id => !val(id))) {
+        if (campos.some(id => {
+          const campo = $(id);
+          return campo && campo.required && !val(id);
+        })) {
           throw Error("Completa los datos de entrega.");
         }
 
