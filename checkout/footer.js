@@ -1936,99 +1936,33 @@ const totalBase = window.sagerTotalPedido;
 
     var lineasProductos = productos.map(function (producto) {
       var cantidad = Number(producto.quantity || 0);
-      var precioUnitario = Number(producto.unit_price || 0) / 100;
-      var totalProducto = precioUnitario * cantidad;
       var nombre = producto.name || "Producto LEGO";
       var variante = producto.short_variant_name
         ? " (" + producto.short_variant_name + ")"
         : "";
 
-      return "• " + nombre + variante +
-        " | Cantidad: " + cantidad +
-        " | Precio unitario: " + formatoDinero(precioUnitario) +
-        " | Total: " + formatoDinero(totalProducto);
+      return "• " + nombre + variante + " | Cantidad: " + cantidad;
     });
 
-    var modalidadRadio = document.querySelector(
-      'input[name="sager-delivery-method"]:checked'
-    );
-    var modalidad = modalidadRadio ? modalidadRadio.value : "";
-    var modalidadTexto = modalidad === "domicilio"
-      ? "Entrega a domicilio"
-      : modalidad === "agencia"
-      ? "Retiro en agencia"
-      : modalidad === "latacunga"
-      ? "Retiro gratuito en Latacunga (La Fornace)"
-      : "Aún no seleccionada";
-
-    var transportista = modalidad === "agencia"
-      ? obtenerCampo("sager-carrier")
-      : obtenerCampo("sager-home-carrier");
-
-    var provincia = modalidad === "agencia"
-      ? obtenerCampo("sager-agency-province")
-      : obtenerCampo("sager-province");
-
-    var canton = modalidad === "agencia"
-      ? obtenerCampo("sager-agency-canton")
-      : obtenerCampo("sager-canton");
-
-    var localidad = modalidad === "agencia"
-      ? obtenerCampo("sager-agency-locality")
-      : obtenerCampo("sager-locality");
-
-    var costoBase = window.sagerCostoEnvio;
-    var datosDestino = [
-      "Modalidad de entrega: " + modalidadTexto,
-      "Transportista: " + (transportista || "Por seleccionar"),
-      "Provincia: " + (provincia || "Por indicar"),
-      "Cantón: " + (canton || "Por indicar"),
-      "Parroquia / localidad: " + (localidad || "Por indicar")
-    ];
-
-    if (modalidad === "agencia") {
-      var nombreAgencia = obtenerCampo("sager-agency-name");
-      var direccionAgencia = obtenerCampo("sager-agency-address");
-
-      if (nombreAgencia) datosDestino.push("Agencia: " + nombreAgencia);
-      if (direccionAgencia) {
-        datosDestino.push("Dirección de agencia: " + direccionAgencia);
-      }
-    }
-
-    if (modalidad === "domicilio") {
-      var direccion = obtenerCampo("sager-address");
-      if (direccion) datosDestino.push("Dirección: " + direccion);
-    }
-
     var mensaje = [
-      "Hola, Sager Store. Quisiera solicitar una cotización del costo definitivo de envío de mi pedido antes de realizar el pago.",
+      "Hola, Sager Store. Quisiera solicitar una cotización del costo de envío de los siguientes productos:",
       "",
-      "DETALLE DEL CARRITO",
+      "PRODUCTOS",
       lineasProductos.length
-        ? lineasProductos.join("\n")
+        ? lineasProductos.join("\\n")
         : "No se pudieron recuperar los productos del carrito.",
       "",
-      "Subtotal de productos: " + formatoDinero(isFinite(subtotal) ? subtotal : 0),
+      "Subtotal de productos: " +
+        formatoDinero(isFinite(subtotal) ? subtotal : 0),
       "",
-      "DATOS DE ENTREGA",
-      datosDestino.join("\n")
+      "El envío sería para la ciudad de: ____________________.",
+      "",
+      "Quisiera conocer el costo definitivo del envío antes de realizar el pago.",
+      "",
+      "Muchas gracias."
     ];
 
-    if (costoBase !== null && costoBase !== undefined && isFinite(Number(costoBase))) {
-      mensaje.push(
-        "",
-        "Tarifa base mostrada en el checkout: " + formatoDinero(Number(costoBase))
-      );
-    }
-
-    mensaje.push(
-      "",
-      "Por favor, confirmen el costo final del envío considerando el peso del paquete, el valor asegurado y la cobertura del destino.",
-      "Muchas gracias."
-    );
-
-    return mensaje.join("\n");
+    return mensaje.join("\\n");
   }
 
   function crearAviso(customer) {
