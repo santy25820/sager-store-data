@@ -804,25 +804,44 @@
       }).format(valor);
     }
 
-    function actualizarResumenTotal(costoEnvio) {
-      var envioElemento = document.getElementById("sager-shipping-cost");
-      var totalElemento = document.getElementById("sager-grand-total");
+    
+function actualizarResumenTotal(costoEnvio) {
+  var envioElemento = document.getElementById("sager-shipping-cost");
+  var totalElemento = document.getElementById("sager-grand-total");
 
-      if (!envioElemento || !totalElemento) return;
+  if (costoEnvio === null || costoEnvio === undefined) {
+    window.sagerCostoEnvio = null;
+    window.sagerTotalPedido = null;
 
-      if (costoEnvio === null || costoEnvio === undefined) {
-        envioElemento.textContent = "Por confirmar";
-        totalElemento.textContent = "Por confirmar";
-        return;
-      }
+    if (envioElemento) envioElemento.textContent = "Por confirmar";
+    if (totalElemento) totalElemento.textContent = "Por confirmar";
 
-      envioElemento.textContent = formatoDineroEntrega(costoEnvio, monedaPedido);
+    document.dispatchEvent(new Event("sager:total-actualizado"));
+    return;
+  }
 
-      totalElemento.textContent = formatoDineroEntrega(
-        subtotalPedido + costoEnvio,
-        monedaPedido
-      );
-    }
+  window.sagerCostoEnvio = Number(costoEnvio);
+  window.sagerTotalPedido = Number(
+  (subtotalPedido + Number(costoEnvio)).toFixed(2)
+);
+
+  if (envioElemento) {
+    envioElemento.textContent = formatoDineroEntrega(
+      window.sagerCostoEnvio,
+      monedaPedido
+    );
+  }
+
+  if (totalElemento) {
+    totalElemento.textContent = formatoDineroEntrega(
+      window.sagerTotalPedido,
+      monedaPedido
+    );
+  }
+
+  document.dispatchEvent(new Event("sager:total-actualizado"));
+}
+
 
     document.addEventListener("sager:subtotal-actualizado", function () {
       subtotalPedido = Number(window.sagerSubtotalPedido || 0);
@@ -1158,12 +1177,183 @@
 
     delivery.insertAdjacentElement("afterend", section);
 
+    
+    // SEGUNDO RESUMEN DEL PEDIDO
+    const resumenInferior = document.createElement("section");
+    resumenInferior.id = "sager-order-summary-bottom";
+
+    resumenInferior.innerHTML = `
+      <div class="sager-summary-card">
+        <h2>Revisa tu pedido</h2>
+
+        <div id="sager-products-bottom"></div>
+
+        <div class="sager-summary-line">
+          <span>Subtotal</span>
+          <strong id="sager-subtotal-bottom">Por confirmar</strong>
+        </div>
+
+        <div class="sager-summary-line">
+          <span>Costo de entrega</span>
+          <strong id="sager-shipping-cost-bottom">Por confirmar</strong>
+        </div>
+
+        <div class="sager-summary-line" id="sager-payphone-fee-row" hidden>
+          <span>Recargo por pago con tarjeta (PayPhone 5,75 %)</span>
+          <strong id="sager-payphone-fee">Por confirmar</strong>
+        </div>
+
+        <div class="sager-summary-total">
+          <span>Total a pagar</span>
+          <strong id="sager-grand-total-bottom">Por confirmar</strong>
+        </div>
+      </div>
+    `;
+
+    section.appendChild(resumenInferior);
+
+    
     const transferPanel = section.querySelector("#sager-transfer-panel");
     const cardPanel = section.querySelector("#sager-card-panel");
     const bankSelect = section.querySelector("#sager-bank-select");
     const receiptInput = section.querySelector("#sager-payment-receipt");
     const receiptName = section.querySelector("#sager-receipt-name");
 
+
+    // ACTUALIZAR SEGUNDO RESUMEN DEL PEDIDO
+    function actualizarResumenInferior() {
+      const contenedor = resumenInferior.querySelector("#sager-products-bottom");
+      const subtotalElemento = resumenInferior.querySelector("#sager-subtotal-bottom");
+      const envioElemento = resumenInferior.querySelector("#sager-shipping-cost-bottom");
+      const recargoFila = resumenInferior.querySelector("#sager-payphone-fee-row");
+      const recargoElemento = resumenInferior.querySelector("#sager-payphone-fee");
+      const totalElemento = resumenInferior.querySelector("#sager-grand-total-bottom");
+
+      const moneda = window.sagerMonedaPedido || "USD";
+const subtotalDisponible =
+  window.sagerSubtotalPedido !== undefined &&
+  window.sagerSubtotalPedido !== null;
+
+const subtotal = subtotalDisponible
+  ? Number(window.sagerSubtotalPedido)
+  : null;
+
+const costoEnvio = window.sagerCostoEnvio;
+const totalBase = window.sagerTotalPedido;
+
+      const formato = new Intl.NumberFormat("es-EC", {
+        style: "currency",
+        currency: moneda
+      });
+
+      contenedor.replaceChildren();
+
+      const carrito = window.LS && window.LS.cart;
+      const productos = carrito && Array.isArray(carrito.items)
+        ? carrito.items
+        : [];
+
+      productos.forEach(function (producto) {
+        const fila = document.createElement("div");
+        fila.className = "sager-product";
+
+        const informacion = document.createElement("div");
+        informacion.className = "sager-product-info";
+
+        const nombre = document.createElement("a");
+        nombre.className = "sager-product-name";
+        nombre.textContent = producto.name || "Producto LEGO";
+
+        if (producto.url) {
+          try {
+            const url = new URL(producto.url, window.location.origin);
+            if (url.origin === window.location.origin) {
+              nombre.href = url.href;
+            }
+          } catch (e) {}
+        }
+
+        informacion.appendChild(nombre);
+
+        if (producto.short_variant_name) {
+          const variante = document.createElement("div");
+          variante.className = "sager-product-detail";
+          variante.textContent = producto.short_variant_name;
+          informacion.appendChild(variante);
+        }
+
+        const cantidad = document.createElement("div");
+        cantidad.className = "sager-product-detail";
+        cantidad.textContent = "Cantidad: " + Number(producto.quantity || 0);
+        informacion.appendChild(cantidad);
+
+        const precio = document.createElement("div");
+        precio.className = "sager-product-price";
+
+        precio.textContent = formato.format(
+          Number(producto.unit_price || 0) *
+          Number(producto.quantity || 0) / 100
+        );
+
+        fila.appendChild(informacion);
+        fila.appendChild(precio);
+        contenedor.appendChild(fila);
+      });
+
+      subtotalElemento.textContent = subtotalDisponible
+  ? formato.format(subtotal)
+  : "Por confirmar";
+
+      envioElemento.textContent =
+        costoEnvio === null || costoEnvio === undefined
+          ? "Por confirmar"
+          : formato.format(Number(costoEnvio));
+
+      const metodoPago = section.querySelector(
+        'input[name="sager-payment-method"]:checked'
+      );
+
+      const esTarjeta = metodoPago && metodoPago.value === "tarjeta";
+
+      recargoFila.hidden = !esTarjeta;
+
+      if (
+  !subtotalDisponible ||
+  costoEnvio === null ||
+  costoEnvio === undefined ||
+  totalBase === null ||
+  totalBase === undefined
+) {
+        recargoElemento.textContent = "Por confirmar";
+        totalElemento.textContent = "Por confirmar";
+        return;
+      }
+
+      const total = Number(totalBase);
+
+      if (esTarjeta) {
+        const recargo = Math.round(total * 0.0575 * 100) / 100;
+
+        recargoElemento.textContent = formato.format(recargo);
+        totalElemento.textContent = formato.format(total + recargo);
+      } else {
+        totalElemento.textContent = formato.format(total);
+      }
+    }
+
+    document.addEventListener(
+      "sager:subtotal-actualizado",
+      actualizarResumenInferior
+    );
+
+    document.addEventListener(
+      "sager:total-actualizado",
+      actualizarResumenInferior
+    );
+
+    actualizarResumenInferior();
+
+    
     section.querySelectorAll('input[name="sager-payment-method"]').forEach(radio => {
       radio.addEventListener("change", function () {
         const isTransfer = this.value === "transferencia";
@@ -1171,6 +1361,8 @@
         transferPanel.hidden = !isTransfer;
         cardPanel.hidden = isTransfer;
 
+        actualizarResumenInferior();
+        
         bankSelect.required = isTransfer;
         receiptInput.required = isTransfer;
 
