@@ -1895,7 +1895,7 @@ const totalBase = window.sagerTotalPedido;
 (function () {
   "use strict";
 
-  if (window.location.pathname.replace(/\\/+$/, "") !== "/finalizar-pedido") {
+  if (window.location.pathname.replace(/\/+$/, "") !== "/finalizar-pedido") {
     return;
   }
 
@@ -2003,7 +2003,7 @@ const totalBase = window.sagerTotalPedido;
       "",
       "DETALLE DEL CARRITO",
       lineasProductos.length
-        ? lineasProductos.join("\\n")
+        ? lineasProductos.join("\n")
         : "No se pudieron recuperar los productos del carrito.",
       "",
       "Subtotal de productos: " + formatoDinero(isFinite(subtotal) ? subtotal : 0),
@@ -2025,7 +2025,7 @@ const totalBase = window.sagerTotalPedido;
       "Muchas gracias."
     );
 
-    return mensaje.join("\\n");
+    return mensaje.join("\n");
   }
 
   function crearAviso(customer) {
