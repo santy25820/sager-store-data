@@ -1889,35 +1889,236 @@ const totalBase = window.sagerTotalPedido;
 
 
 // ==========================================
-// 10. AVISO PARA PEDIDOS SUPERIORES A $100
+// 10. AVISO Y COTIZACIÓN PARA PEDIDOS SUPERIORES A $100
 // ==========================================
 
 (function () {
-  function actualizar() {
-    var aviso = document.getElementById("sager-high-order-notice");
+  "use strict";
 
-    if (!aviso) return;
+  if (window.location.pathname.replace(/\\/+$/, "") !== "/finalizar-pedido") {
+    return;
+  }
+
+  var WHATSAPP_URL = "https://wa.me/593984441100";
+  var aviso = null;
+
+  function obtenerCampo(id) {
+    var campo = document.getElementById(id);
+    return campo ? String(campo.value || "").trim() : "";
+  }
+
+  function obtenerMoneda() {
+    return window.sagerMonedaPedido ||
+      (window.LS && window.LS.currency && window.LS.currency.code) ||
+      "USD";
+  }
+
+  function formatoDinero(valor) {
+    return new Intl.NumberFormat("es-EC", {
+      style: "currency",
+      currency: obtenerMoneda()
+    }).format(valor);
+  }
+
+  function construirMensajeCotizacion() {
+    var carrito = window.LS && window.LS.cart;
+    var productos = carrito && Array.isArray(carrito.items)
+      ? carrito.items
+      : [];
+
+    var subtotal = Number(window.sagerSubtotalPedido);
+    if (!isFinite(subtotal) && carrito) {
+      subtotal = Number(carrito.subtotal || 0) / 100;
+    }
+
+    var lineasProductos = productos.map(function (producto) {
+      var cantidad = Number(producto.quantity || 0);
+      var precioUnitario = Number(producto.unit_price || 0) / 100;
+      var totalProducto = precioUnitario * cantidad;
+      var nombre = producto.name || "Producto LEGO";
+      var variante = producto.short_variant_name
+        ? " (" + producto.short_variant_name + ")"
+        : "";
+
+      return "• " + nombre + variante +
+        " | Cantidad: " + cantidad +
+        " | Precio unitario: " + formatoDinero(precioUnitario) +
+        " | Total: " + formatoDinero(totalProducto);
+    });
+
+    var modalidadRadio = document.querySelector(
+      'input[name="sager-delivery-method"]:checked'
+    );
+    var modalidad = modalidadRadio ? modalidadRadio.value : "";
+    var modalidadTexto = modalidad === "domicilio"
+      ? "Entrega a domicilio"
+      : modalidad === "agencia"
+      ? "Retiro en agencia"
+      : modalidad === "latacunga"
+      ? "Retiro gratuito en Latacunga (La Fornace)"
+      : "Aún no seleccionada";
+
+    var transportista = modalidad === "agencia"
+      ? obtenerCampo("sager-carrier")
+      : obtenerCampo("sager-home-carrier");
+
+    var provincia = modalidad === "agencia"
+      ? obtenerCampo("sager-agency-province")
+      : obtenerCampo("sager-province");
+
+    var canton = modalidad === "agencia"
+      ? obtenerCampo("sager-agency-canton")
+      : obtenerCampo("sager-canton");
+
+    var localidad = modalidad === "agencia"
+      ? obtenerCampo("sager-agency-locality")
+      : obtenerCampo("sager-locality");
+
+    var costoBase = window.sagerCostoEnvio;
+    var datosDestino = [
+      "Modalidad de entrega: " + modalidadTexto,
+      "Transportista: " + (transportista || "Por seleccionar"),
+      "Provincia: " + (provincia || "Por indicar"),
+      "Cantón: " + (canton || "Por indicar"),
+      "Parroquia / localidad: " + (localidad || "Por indicar")
+    ];
+
+    if (modalidad === "agencia") {
+      var nombreAgencia = obtenerCampo("sager-agency-name");
+      var direccionAgencia = obtenerCampo("sager-agency-address");
+
+      if (nombreAgencia) datosDestino.push("Agencia: " + nombreAgencia);
+      if (direccionAgencia) {
+        datosDestino.push("Dirección de agencia: " + direccionAgencia);
+      }
+    }
+
+    if (modalidad === "domicilio") {
+      var direccion = obtenerCampo("sager-address");
+      if (direccion) datosDestino.push("Dirección: " + direccion);
+    }
+
+    var mensaje = [
+      "Hola, Sager Store. Quisiera solicitar una cotización del costo definitivo de envío de mi pedido antes de realizar el pago.",
+      "",
+      "DETALLE DEL CARRITO",
+      lineasProductos.length
+        ? lineasProductos.join("\\n")
+        : "No se pudieron recuperar los productos del carrito.",
+      "",
+      "Subtotal de productos: " + formatoDinero(isFinite(subtotal) ? subtotal : 0),
+      "",
+      "DATOS DE ENTREGA",
+      datosDestino.join("\\n")
+    ];
+
+    if (costoBase !== null && costoBase !== undefined && isFinite(Number(costoBase))) {
+      mensaje.push(
+        "",
+        "Tarifa base mostrada en el checkout: " + formatoDinero(Number(costoBase))
+      );
+    }
+
+    mensaje.push(
+      "",
+      "Por favor, confirmen el costo final del envío considerando el peso del paquete, el valor asegurado y la cobertura del destino.",
+      "Muchas gracias."
+    );
+
+    return mensaje.join("\\n");
+  }
+
+  function crearAviso(customer) {
+    aviso = document.getElementById("sager-high-order-notice");
+
+    if (!aviso) {
+      aviso = document.createElement("section");
+      aviso.id = "sager-high-order-notice";
+    }
+
+    aviso.replaceChildren();
+
+    var titulo = document.createElement("h2");
+    titulo.textContent = "Importante: pedidos superiores a $100";
+
+    var parrafoTarifa = document.createElement("p");
+    parrafoTarifa.textContent =
+      "El costo de envío mostrado corresponde a una tarifa base y puede variar según el peso del paquete, el valor asegurado y la cobertura de la empresa transportista.";
+
+    var parrafoPago = document.createElement("p");
+    parrafoPago.textContent =
+      "Puedes continuar con tu pedido y pagar el valor mostrado. Si existe alguna diferencia, te avisaremos antes de realizar el envío nacional.";
+
+    var parrafoCotizacion = document.createElement("p");
+    parrafoCotizacion.textContent =
+      "Si prefieres conocer el costo definitivo antes de pagar, puedes solicitar una cotización por WhatsApp. Prepararemos un mensaje con los productos, cantidades, precios y datos de entrega que hayas seleccionado.";
+
+    var parrafoIncluye = document.createElement("p");
+    parrafoIncluye.textContent =
+      "Los valores incluyen flete, embalaje y seguro.";
+
+    var enlace = document.createElement("a");
+    enlace.href = WHATSAPP_URL;
+    enlace.target = "_blank";
+    enlace.rel = "noopener noreferrer";
+    enlace.textContent = "Solicitar cotización por WhatsApp";
+    enlace.style.cssText =
+      "display:inline-block;background:#111;color:#fff;padding:12px 18px;border-radius:5px;text-decoration:none;font-weight:bold;";
+
+    enlace.addEventListener("click", function () {
+      this.href = WHATSAPP_URL + "?text=" +
+        encodeURIComponent(construirMensajeCotizacion());
+    });
+
+    var contenedorEnlace = document.createElement("p");
+    contenedorEnlace.style.marginTop = "16px";
+    contenedorEnlace.appendChild(enlace);
+
+    aviso.append(
+      titulo,
+      parrafoTarifa,
+      parrafoPago,
+      parrafoCotizacion,
+      parrafoIncluye,
+      contenedorEnlace
+    );
+
+    if (!aviso.isConnected) {
+      customer.parentNode.insertBefore(aviso, customer);
+    }
+  }
+
+  function actualizar() {
+    var customer = document.getElementById("sager-customer-section");
+    if (!customer) return;
+
+    if (!aviso || !aviso.isConnected) {
+      crearAviso(customer);
+    }
 
     var subtotal = Number(window.sagerSubtotalPedido);
 
     if (!isFinite(subtotal) || subtotal <= 100) {
       aviso.style.display = "none";
-      aviso.innerHTML = "";
       return;
     }
-
-    aviso.innerHTML =
-      "<h2>Importante: pedidos superiores a $100</h2>" +
-      "<p>El costo de envío mostrado corresponde a una tarifa base y puede variar según el peso del paquete, el valor asegurado y la cobertura de la empresa transportista.</p>" +
-      "<p>Puedes continuar con tu pedido y pagar el valor mostrado. Si existe alguna diferencia, te avisaremos antes de realizar el envío nacional.</p>" +
-      "<p>Si prefieres conocer el costo definitivo antes de pagar, puedes solicitar una cotización por WhatsApp.</p>" +
-      "<p>Los valores incluyen flete, embalaje y seguro.</p>" +
-      '<p style="margin-top:16px;"><a href="https://wa.me/593984441100" target="_blank" rel="noopener" style="display:inline-block;background:#111;color:#fff;padding:12px 18px;border-radius:5px;text-decoration:none;font-weight:bold;">Solicitar cotización por WhatsApp</a></p>';
 
     aviso.style.display = "block";
   }
 
-  window.addEventListener("sager:subtotal-actualizado", actualizar);
+  document.addEventListener("sager:subtotal-actualizado", actualizar);
+
+  var observador = new MutationObserver(function () {
+    if (document.getElementById("sager-customer-section")) {
+      actualizar();
+      observador.disconnect();
+    }
+  });
+
+  observador.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
 
   actualizar();
 
