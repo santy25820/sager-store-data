@@ -1,0 +1,617 @@
+/* SAGER STORE ECUADOR | Footer y checkout personalizado */
+
+/* Botón personalizado del carrito lateral */
+#sager-custom-checkout {
+  margin-bottom: 12px;
+}
+
+#sager-custom-checkout .sager-checkout-content {
+  background: #f0f8f2;
+  border: 1px solid #d5e9da;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+#sager-custom-checkout .sager-checkout-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #263b2d;
+  margin-bottom: 7px;
+}
+
+#sager-custom-checkout .sager-checkout-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #526258;
+  margin: 0 0 13px;
+}
+
+#sager-custom-checkout .sager-checkout-button {
+  display: block;
+  width: 100%;
+  padding: 13px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #16834a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#sager-custom-checkout .sager-checkout-button:hover {
+  background: #116b3c;
+}
+
+/* Resumen del pedido */
+#sager-order-summary {
+  max-width: 760px;
+  margin: 35px auto;
+  padding: 0 16px;
+  color: #292929;
+  font-family: inherit;
+}
+
+#sager-order-summary * {
+  box-sizing: border-box;
+}
+
+.sager-summary-header {
+  margin-bottom: 25px;
+}
+
+.sager-eyebrow {
+  color: #16834a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.sager-summary-header h1 {
+  font-size: 28px;
+  margin: 8px 0;
+  color: #ffffff;
+}
+
+.sager-summary-header p {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.sager-summary-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 22px;
+  background: #fff;
+}
+
+.sager-summary-card h2 {
+  font-size: 19px;
+  margin: 0 0 18px;
+}
+
+.sager-product {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid #ededed;
+}
+
+.sager-product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sager-product-name {
+  font-size: 14px;
+  font-weight: 650;
+  color: #292929;
+  text-decoration: none;
+}
+
+.sager-product-detail {
+  margin-top: 5px;
+  color: #777;
+  font-size: 12px;
+}
+
+.sager-product-price {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sager-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  font-weight: 650;
+}
+
+.sager-summary-total strong {
+  font-size: 23px;
+  color: #16834a;
+}
+
+.sager-summary-note {
+  color: #888;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sager-empty {
+  padding: 20px 0;
+  color: #777;
+}
+
+.sager-empty a {
+  display: block;
+  margin-top: 10px;
+  color: #16834a;
+  font-weight: 650;
+}
+
+/* Datos del cliente */
+.sager-form-card {
+  margin-top: 22px;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  color: #292929;
+}
+
+.sager-form-heading {
+  margin-bottom: 22px;
+}
+
+.sager-form-heading h2 {
+  font-size: 19px;
+  margin: 0 0 8px;
+  color: #292929;
+}
+
+.sager-form-heading p {
+  margin: 0;
+  color: #777777;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sager-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 14px;
+}
+
+.sager-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.sager-field-full {
+  grid-column: 1 / -1;
+}
+
+.sager-field label {
+  font-size: 13px;
+  font-weight: 650;
+  color: #333333;
+}
+
+.sager-field label span {
+  color: #888888;
+  font-weight: 400;
+}
+
+.sager-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #292929;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.sager-field input:focus {
+  border-color: #16834a;
+  box-shadow: 0 0 0 2px rgba(22, 131, 74, 0.12);
+}
+
+.sager-field input::placeholder {
+  color: #aaaaaa;
+}
+
+.sager-form-required {
+  margin: 18px 0 0;
+  color: #888888;
+  font-size: 11px;
+}
+
+/* Opciones de entrega */
+#sager-delivery-section {
+  margin-top: 24px;
+}
+
+.sager-delivery-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.sager-delivery-card h2 {
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+
+.sager-delivery-intro {
+  color: #666;
+  margin: 0 0 18px;
+  font-size: 14px;
+}
+
+.sager-delivery-options {
+  display: grid;
+  gap: 12px;
+}
+
+.sager-delivery-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.sager-delivery-option:has(input:checked) {
+  border-color: #222;
+  background: #fafafa;
+}
+
+.sager-delivery-option input {
+  margin-top: 4px;
+  accent-color: #222;
+}
+
+.sager-delivery-option strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sager-delivery-option small {
+  display: block;
+  color: #666;
+  line-height: 1.45;
+}
+
+.sager-delivery-details {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.sager-delivery-details[hidden] {
+  display: none !important;
+}
+
+.sager-delivery-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sager-delivery-field {
+  min-width: 0;
+}
+
+.sager-delivery-field.full {
+  grid-column: 1 / -1;
+}
+
+.sager-delivery-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.sager-delivery-field select,
+.sager-delivery-field input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.sager-pickup-place {
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 16px;
+  line-height: 1.55;
+}
+
+.sager-pickup-place p {
+  margin: 7px 0;
+}
+
+.sager-delivery-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #eee;
+}
+
+.sager-delivery-price strong {
+  font-size: 20px;
+}
+
+.sager-delivery-help {
+  font-size: 13px;
+  color: #666;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* Métodos de pago */
+#sager-payment-section {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  color: #222;
+}
+
+#sager-payment-section h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+#sager-payment-section .sager-payment-intro {
+  margin: 0 0 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.sager-payment-options {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.sager-payment-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.sager-payment-option input {
+  margin-top: 4px;
+}
+
+.sager-payment-option strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sager-payment-option small {
+  color: #666;
+  line-height: 1.4;
+}
+
+.sager-payment-panel {
+  margin-top: 16px;
+}
+
+.sager-payment-panel[hidden] {
+  display: none !important;
+}
+
+.sager-payment-panel h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+
+#sager-bank-select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  background: white;
+  margin-bottom: 16px;
+}
+
+.sager-bank-details {
+  padding: 16px;
+  background: #f7f7f7;
+  border-radius: 9px;
+}
+
+.sager-bank-details[hidden] {
+  display: none !important;
+}
+
+.sager-bank-details h4 {
+  margin: 0 0 14px;
+  font-size: 17px;
+}
+
+.sager-bank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.sager-bank-row:last-child {
+  border-bottom: 0;
+}
+
+.sager-bank-info {
+  min-width: 0;
+}
+
+.sager-bank-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #777;
+  font-size: 12px;
+}
+
+.sager-bank-value {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sager-copy-button {
+  flex-shrink: 0;
+  padding: 7px 11px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: white;
+  color: #222;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sager-copy-button:hover {
+  background: #eee;
+}
+
+.sager-payment-warning {
+  margin: 14px 0 0;
+  padding: 12px;
+  border-radius: 7px;
+  background: #fff8e8;
+  color: #614b1d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sager-receipt-label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#sager-payment-receipt {
+  width: 100%;
+  font-size: 13px;
+}
+
+#sager-receipt-name {
+  display: block;
+  margin-top: 8px;
+  color: #666;
+  font-size: 13px;
+}
+
+.sager-card-message {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f7f7f7;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Correcciones visuales que ya estaban en el footer */
+.sager-delivery-fields[hidden] {
+  display: none !important;
+}
+
+#sager-delivery-cost-note {
+  margin-top: 9px;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 480px) {
+  #sager-order-summary {
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
+  .sager-summary-card {
+    padding: 17px;
+  }
+
+  .sager-form-card {
+    padding: 17px;
+  }
+
+  #sager-payment-section {
+    padding: 17px;
+  }
+
+  .sager-bank-row {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .sager-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sager-field-full {
+    grid-column: auto;
+  }
+
+  .sager-delivery-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .sager-delivery-field.full {
+    grid-column: auto;
+  }
+}
+
+
+/* Botón flotante de WhatsApp */
+.sager-whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background-color: #25D366;
+  color: #ffffff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
