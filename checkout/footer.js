@@ -1941,28 +1941,28 @@ const totalBase = window.sagerTotalPedido;
         ? " (" + producto.short_variant_name + ")"
         : "";
 
-      return "• " + nombre + variante + " | Cantidad: " + cantidad;
+      return "• " + nombre + variante + " — " + cantidad + (cantidad === 1 ? " unidad" : " unidades");
     });
 
     var mensaje = [
-      "Hola, Sager Store. Quisiera solicitar una cotización del costo de envío de los siguientes productos:",
+      "Hola, Sager Store. Quisiera consultar el costo de envío de mi pedido.",
       "",
-      "PRODUCTOS",
+      "Productos:",
       lineasProductos.length
-        ? lineasProductos.join("\\n")
+        ? lineasProductos.join("\n")
         : "No se pudieron recuperar los productos del carrito.",
       "",
-      "Subtotal de productos: " +
+      "Subtotal: " +
         formatoDinero(isFinite(subtotal) ? subtotal : 0),
       "",
-      "El envío sería para la ciudad de: ____________________.",
+      "Ciudad de destino: [Escribe aquí tu ciudad]",
       "",
-      "Quisiera conocer el costo definitivo del envío antes de realizar el pago.",
+      "Quisiera conocer el costo total del envío antes de realizar el pago.",
       "",
-      "Muchas gracias."
+      "¡Muchas gracias!"
     ];
 
-    return mensaje.join("\\n");
+    return mensaje.join("\n");
   }
 
   function crearAviso(customer) {
