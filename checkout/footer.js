@@ -1691,27 +1691,32 @@ const totalBase = window.sagerTotalPedido;
         }
 
         const subtotal = Number(window.sagerSubtotalPedido);
-
-        const textoTotal = $("sager-grand-total")?.textContent || "";
-
-        const total = Number(
-          textoTotal
-            .replace(/[^\d,.-]/g, "")
-            .replace(/\./g, "")
-            .replace(",", ".")
-        );
-
-        const costoEnvio = Number((total - subtotal).toFixed(2));
+        const costoEnvio = Number(window.sagerCostoEnvio);
+        const totalBase = Number(window.sagerTotalPedido);
 
         if (
           !Number.isFinite(subtotal) ||
-          !Number.isFinite(total) ||
-          costoEnvio < 0
+          !Number.isFinite(costoEnvio) ||
+          !Number.isFinite(totalBase) ||
+          subtotal < 0 ||
+          costoEnvio < 0 ||
+          Math.round((subtotal + costoEnvio) * 100) !==
+            Math.round(totalBase * 100)
         ) {
           throw Error(
             "No pudimos calcular el total del pedido. Recarga la página."
           );
         }
+
+        // PayPhone cobra un recargo del 5,75 % sobre subtotal + envío.
+        // Se calcula en centavos para evitar errores de precisión.
+        const recargoPayphone = metodoPago === "tarjeta"
+          ? Math.round(Math.round(totalBase * 100) * 0.0575) / 100
+          : 0;
+
+        const total = Number(
+          (totalBase + recargoPayphone).toFixed(2)
+        );
 
         const productos = (window.LS?.cart?.items || []).map(p => ({
           id: p.id,
@@ -1811,6 +1816,8 @@ const totalBase = window.sagerTotalPedido;
           productos,
           subtotal,
           costoEnvio,
+          totalBase,
+          recargoPayphone,
           total,
           metodoPago,
           banco,
