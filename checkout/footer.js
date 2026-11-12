@@ -1632,11 +1632,6 @@ const totalBase = window.sagerTotalPedido;
   const API = "https://sager-pedidos-api.santy25820.workers.dev/";
   const REQUEST_KEY = "sager_checkout_request_id";
 
-  const requestId =
-    sessionStorage.getItem(REQUEST_KEY) || crypto.randomUUID();
-
-  sessionStorage.setItem(REQUEST_KEY, requestId);
-
   const $ = id => document.getElementById(id);
   const val = id => $(id)?.value?.trim() || "";
 
@@ -1805,6 +1800,13 @@ const totalBase = window.sagerTotalPedido;
         })) {
           throw Error("Completa los datos de entrega.");
         }
+
+        // Cada compra nueva recibe un ID propio. Si hubo un fallo de
+        // comunicación, se conserva el ID pendiente para reintentar sin duplicar.
+        const requestId =
+          sessionStorage.getItem(REQUEST_KEY) || crypto.randomUUID();
+
+        sessionStorage.setItem(REQUEST_KEY, requestId);
 
         const pedido = {
           requestId: requestId,
