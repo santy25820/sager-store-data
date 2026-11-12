@@ -1845,13 +1845,16 @@ const totalBase = window.sagerTotalPedido;
 
           d = await r.json();
 
-        } catch (e) {
-          btn.textContent = "No se pudo confirmar";
+                } catch (e) {
+          window.turnstile?.reset();
+
+          btn.disabled = false;
+          btn.textContent = "Finalizar pedido";
 
           msg.style.color = "#c62828";
 
           msg.textContent =
-            "No pudimos confirmar la respuesta del servidor. No vuelvas a enviar el pedido todavía. Contáctanos por WhatsApp para comprobar su estado.";
+            "No pudimos confirmar la respuesta del servidor. Puedes volver a intentarlo; comprobaremos si tu pedido ya fue registrado antes de crear uno nuevo.";
 
           return;
         }
