@@ -1878,7 +1878,7 @@ const totalBase = window.sagerTotalPedido;
         msg.textContent =
           "¡Gracias por comprar en Sager Store! Tu número de pedido es " +
           d.orderNumber +
-          ". Recibirás la información para continuar con tu compra.";
+          ". Te enviaremos una notificación a tu correo electrónico con la información de tu pedido. Si no la encuentras en tu bandeja de entrada, recuerda revisar también la carpeta de spam o correo no deseado.";
 
         btn.style.cursor = "default";
 
