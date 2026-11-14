@@ -21,34 +21,14 @@
     );
 
     boton.innerHTML = `
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
+      <img
+        src="https://raw.githubusercontent.com/santy25820/sager-store-data/3d1e91f388fec9d8c4218462bfbe8a3e2f11bf6a/images/629af8fa-c8de-48c0-a1c3-8987d6192704.png"
         width="24"
         height="24"
-        viewBox="0 0 24 24"
-        fill="none"
+        alt=""
         aria-hidden="true"
-      >
-        <path
-          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
-          fill="none"
-          stroke="#FFFFFF"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-
-        <g transform="translate(0.8, 0.9)">
-          <path
-            d="M15.05 13.15c-.25-.12-1.45-.72-1.68-.8-.23-.08-.4-.12-.57.12-.17.24-.65.8-.8.96-.15.16-.3.18-.55.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.01-.39.11-.51.11-.11.25-.29.37-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.57-1.38-.78-1.89-.21-.5-.43-.43-.59-.44l-.5-.01c-.17 0-.45.06-.69.32-.24.26-.92.9-.92 2.2 0 1.3.94 2.56 1.07 2.73.13.17 1.85 2.82 4.47 3.95.63.27 1.12.43 1.5.55.63.2 1.21.17 1.66.1.51-.08 1.57-.64 1.79-1.26.22-.62.22-1.15.16-1.26-.06-.11-.23-.18-.48-.3z"
-            fill="none"
-            stroke="#FFFFFF"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </g>
-      </svg>
+        style="display:block;width:24px;height:24px;object-fit:contain;flex-shrink:0;"
+      />
 
       Chatea con nosotros
     `;
